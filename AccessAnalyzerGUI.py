@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import scrolledtext, messagebox, filedialog
 import os
 import sys
+import re
 
 class AccessAnalyzerGUI:
     def __init__(self, root):
@@ -69,6 +70,13 @@ class AccessAnalyzerGUI:
                            bg="#dcdde1", padx=5)
             btn.pack(side=tk.LEFT, padx=5, pady=5)
         
+        # Añadir ejemplo inválido con botón especial
+        bad_example = "resource = 'config.xml' AND user admin"  # Ejemplo con sintaxis inválida
+        bad_btn = tk.Button(examples_frame, text="Ejemplo malo", 
+                           command=lambda: self.set_example(bad_example),
+                           bg="#e74c3c", fg="white", padx=5)
+        bad_btn.pack(side=tk.LEFT, padx=5, pady=5)
+        
         # Botones para acciones
         actions_frame = tk.Frame(root, bg="#f0f0f0", padx=10, pady=5)
         actions_frame.pack(fill="x", padx=20, pady=10)
@@ -83,10 +91,7 @@ class AccessAnalyzerGUI:
                              padx=10)
         clear_btn.pack(side=tk.LEFT, padx=5)
         
-        save_btn = tk.Button(actions_frame, text="Guardar Resultados", bg="#3498db", fg="white",
-                            command=self.save_results, height=2, font=("Arial", 11),
-                            padx=10)
-        save_btn.pack(side=tk.LEFT, padx=5)
+        # Eliminado el botón de guardar resultados
         
         # Área de resultados
         result_frame = tk.LabelFrame(root, text="Resultado del análisis", font=("Arial", 12), 
@@ -115,25 +120,7 @@ class AccessAnalyzerGUI:
         self.result_text.delete(1.0, tk.END)
         self.status_label.config(text="Se han limpiado todos los campos")
 
-    def save_results(self):
-        result = self.result_text.get(1.0, tk.END).strip()
-        if not result:
-            messagebox.showinfo("Información", "No hay resultados para guardar")
-            return
-        
-        file_path = filedialog.asksaveasfilename(
-            defaultextension='.txt',
-            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")],
-            title="Guardar resultados"
-        )
-        
-        if file_path:
-            try:
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(result)
-                self.status_label.config(text=f"Resultados guardados en: {file_path}")
-            except Exception as e:
-                messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
+    # Eliminado el método save_results
 
     def analyze_rule(self):
         rule = self.input_text.get(1.0, tk.END).strip()
@@ -190,14 +177,17 @@ class AccessAnalyzerGUI:
             
             if hasattr(process, 'returncode') and process.returncode != 0:
                 self.result_text.insert(tk.END, f"AVISO: El analizador terminó con código {process.returncode}\n\n")
+            
+            # Procesar la salida para quitar el mensaje no deseado
+            if stdout:
+                # Eliminar el mensaje "📝 Ingrese reglas de acceso (Enter y luego Ctrl+D para terminar):"
+                processed_output = re.sub(r'📝 Ingrese reglas de acceso \(Enter y luego Ctrl\+D para terminar\):', '', stdout)
+                self.result_text.insert(tk.END, processed_output)
+            else:
+                self.result_text.insert(tk.END, "El analizador no produjo ninguna salida.")
                 
             if stderr:
                 self.result_text.insert(tk.END, f"ERRORES:\n{stderr}\n\n")
-                
-            if stdout:
-                self.result_text.insert(tk.END, stdout)
-            else:
-                self.result_text.insert(tk.END, "El analizador no produjo ninguna salida.")
                 
             self.status_label.config(text="Análisis completado")
             

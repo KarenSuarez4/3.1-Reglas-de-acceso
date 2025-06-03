@@ -1,1 +1,1 @@
-user admin AND resource != 'logs.txt'
+user admin AND (hour >= 9 OR day = 'Saturday')
