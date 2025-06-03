@@ -1,0 +1,17 @@
+# Casos de prueba para el analizador de reglas de acceso
+
+# Casos válidos:
+user admin
+user admin AND hour >= 9
+user admin AND hour >= 9 AND hour <= 17
+user guest AND NOT resource = 'config.xml'
+user operator AND day = 'Monday'
+user admin AND (hour >= 9 OR day = 'Saturday')
+user guest AND resource != 'sensitive.db' AND hour < 22
+
+# Casos inválidos (para probar manejo de errores):
+admin user              # Orden incorrecto
+user AND hour >= 9      # Falta rol
+user admin hour >= 9    # Falta operador AND
+user admin AND hour >   # Falta operando
+user admin AND = 9      # Falta identificador
