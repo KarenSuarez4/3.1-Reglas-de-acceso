@@ -6,34 +6,38 @@ import sys
 import re
 
 class AccessAnalyzerGUI:
+    """
+    Clase que implementa una interfaz gráfica para validar reglas de acceso.
+    Permite al usuario ingresar reglas de control de acceso y verificar su validez.
+    """
+    
     def __init__(self, root):
+        """
+        Inicializa la aplicación y configura la interfaz gráfica principal.
+        
+        Args:
+            root: Ventana principal de la aplicación tkinter.
+        """
         self.root = root
         self.root.title("Validador de Reglas de Acceso")
         self.root.geometry("800x600")
         self.root.configure(bg="#f0f0f0")
 
-        # Determinar la ruta del analizador
         if getattr(sys, 'frozen', False):
-            # Si es ejecutable empaquetado
             base_dir = os.path.dirname(sys.executable)
         else:
-            # Si es script normal
             base_dir = os.path.dirname(os.path.abspath(__file__))
         
-        # Detectar el sistema operativo para usar el nombre correcto del ejecutable
         if sys.platform.startswith('win'):
-            # Intenta primero con .exe, luego sin extensión
             self.analyzer_path = os.path.join(base_dir, "access_analyzer.exe")
             if not os.path.exists(self.analyzer_path):
                 self.analyzer_path = os.path.join(base_dir, "access_analyzer")
         else:
             self.analyzer_path = os.path.join(base_dir, "access_analyzer")
         
-        # Verificar si el ejecutable existe
         if not os.path.exists(self.analyzer_path):
             messagebox.showwarning("Advertencia", f"No se encontró el ejecutable en {self.analyzer_path}\nAsegúrate de que esté compilado y en el mismo directorio.")
         
-        # Área de título
         title_frame = tk.Frame(root, bg="#3498db", padx=10, pady=10)
         title_frame.pack(fill="x")
         
@@ -41,7 +45,6 @@ class AccessAnalyzerGUI:
                               font=("Arial", 16, "bold"), bg="#3498db", fg="white")
         title_label.pack()
         
-        # Área de entrada
         input_frame = tk.LabelFrame(root, text="Ingrese la regla de acceso", font=("Arial", 12), 
                                    padx=10, pady=10, bg="#f0f0f0")
         input_frame.pack(fill="both", expand=False, padx=20, pady=10)
@@ -49,7 +52,6 @@ class AccessAnalyzerGUI:
         self.input_text = scrolledtext.ScrolledText(input_frame, height=5, font=("Consolas", 12))
         self.input_text.pack(fill="both", expand=True)
         
-        # Ejemplos predefinidos
         examples_frame = tk.Frame(root, bg="#f0f0f0", padx=10, pady=5)
         examples_frame.pack(fill="x", padx=20)
         
@@ -70,14 +72,12 @@ class AccessAnalyzerGUI:
                            bg="#dcdde1", padx=5)
             btn.pack(side=tk.LEFT, padx=5, pady=5)
         
-        # Añadir ejemplo inválido con botón especial
-        bad_example = "resource = 'config.xml' AND user admin"  # Ejemplo con sintaxis inválida
+        bad_example = "resource = 'config.xml' AND user admin"
         bad_btn = tk.Button(examples_frame, text="Ejemplo malo", 
                            command=lambda: self.set_example(bad_example),
                            bg="#e74c3c", fg="white", padx=5)
         bad_btn.pack(side=tk.LEFT, padx=5, pady=5)
         
-        # Botones para acciones
         actions_frame = tk.Frame(root, bg="#f0f0f0", padx=10, pady=5)
         actions_frame.pack(fill="x", padx=20, pady=10)
         
@@ -91,9 +91,6 @@ class AccessAnalyzerGUI:
                              padx=10)
         clear_btn.pack(side=tk.LEFT, padx=5)
         
-        # Eliminado el botón de guardar resultados
-        
-        # Área de resultados
         result_frame = tk.LabelFrame(root, text="Resultado del análisis", font=("Arial", 12), 
                                     padx=10, pady=10, bg="#f0f0f0")
         result_frame.pack(fill="both", expand=True, padx=20, pady=10)
@@ -102,34 +99,45 @@ class AccessAnalyzerGUI:
                                                    bg="#f8f9fa", wrap="word")
         self.result_text.pack(fill="both", expand=True)
         
-        # Atajos de teclado
         self.root.bind('<Control-Return>', lambda e: self.analyze_rule())
         
-        # Mensaje de estado
         self.status_label = tk.Label(root, text="Listo", bd=1, relief=tk.SUNKEN, anchor=tk.W,
                                     font=("Arial", 9), bg="#f0f0f0")
         self.status_label.pack(side=tk.BOTTOM, fill=tk.X)
 
     def set_example(self, example):
+        """
+        Carga un ejemplo predefinido de regla de acceso en el área de entrada.
+        
+        Args:
+            example: Texto del ejemplo a cargar en el campo de entrada.
+        """
         self.input_text.delete(1.0, tk.END)
         self.input_text.insert(tk.END, example)
         self.status_label.config(text=f"Ejemplo cargado: {example[:30]}...")
 
     def clear_all(self):
+        """
+        Limpia todos los campos de texto de la interfaz.
+        Restablece el área de entrada y el área de resultados.
+        """
         self.input_text.delete(1.0, tk.END)
         self.result_text.delete(1.0, tk.END)
         self.status_label.config(text="Se han limpiado todos los campos")
 
-    # Eliminado el método save_results
-
     def analyze_rule(self):
+        """
+        Analiza la regla de acceso ingresada por el usuario.
+        
+        Envía la regla al analizador externo y muestra los resultados.
+        Maneja diferentes sistemas operativos y posibles errores.
+        """
         rule = self.input_text.get(1.0, tk.END).strip()
         
         if not rule:
             messagebox.showerror("Error", "Por favor ingrese una regla de acceso para analizar")
             return
         
-        # Actualizar estado
         self.status_label.config(text="Analizando regla...")
         self.root.update()
         
@@ -140,16 +148,13 @@ class AccessAnalyzerGUI:
                 self.status_label.config(text="Error: Analizador no encontrado")
                 return
                 
-            # Método según sistema operativo
             if sys.platform.startswith('win'):
-                # Usar WSL para ejecutar el analizador Linux
                 temp_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "temp_rule.txt")
                 with open(temp_file, "w", encoding="utf-8") as f:
                     f.write(rule)
                 
-                # Usar wsl para ejecutar el analizador Linux
                 process = subprocess.Popen(
-                    ["wsl", "./access_analyzer"],  # Ejecuta con WSL
+                    ["wsl", "./access_analyzer"],
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -160,7 +165,6 @@ class AccessAnalyzerGUI:
                 stdout, stderr = process.communicate(input=rule)
         
             else:
-                # Método para Linux/Mac
                 process = subprocess.Popen(
                     [self.analyzer_path],
                     stdin=subprocess.PIPE,
@@ -172,15 +176,12 @@ class AccessAnalyzerGUI:
                 
                 stdout, stderr = process.communicate(input=rule)
         
-            # Mostrar resultado
             self.result_text.delete(1.0, tk.END)
             
             if hasattr(process, 'returncode') and process.returncode != 0:
                 self.result_text.insert(tk.END, f"AVISO: El analizador terminó con código {process.returncode}\n\n")
             
-            # Procesar la salida para quitar el mensaje no deseado
             if stdout:
-                # Eliminar el mensaje "📝 Ingrese reglas de acceso (Enter y luego Ctrl+D para terminar):"
                 processed_output = re.sub(r'📝 Ingrese reglas de acceso \(Enter y luego Ctrl\+D para terminar\):', '', stdout)
                 self.result_text.insert(tk.END, processed_output)
             else:

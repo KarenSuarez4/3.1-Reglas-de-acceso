@@ -486,11 +486,32 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "lexer.l"
-#line 2 "lexer.l"
+/**
+ * Analizador Léxico para Reglas de Acceso.
+ * Define los tokens y patrones para el análisis de reglas de control de acceso.
+ */
+#line 7 "lexer.l"
+/**
+ * Sección de declaraciones de C.
+ * Incluye las librerías necesarias y las declaraciones de funciones externas.
+ */
+
 #include <stdio.h>
 #include "parser.tab.h"
-#line 493 "lex.yy.c"
-#line 494 "lex.yy.c"
+#line 502 "lex.yy.c"
+/**
+ * Definición de patrones regulares utilizados en el léxico.
+ * Estos patrones serán referenciados en las reglas de abajo.
+ */
+/**
+ * Reglas de reconocimiento de tokens para los elementos del lenguaje.
+ * Cada regla devuelve el token correspondiente al analizador sintáctico.
+ * Tokens para elementos de usuario, roles, condiciones temporales, recursos, operadores lógicos, 
+ * operadores de comparación 7 simbolos de agrupación, .
+ * Definen los diferentes tipos de usuarios y sus permisos.
+ * 
+ */
+#line 515 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -707,10 +728,10 @@ YY_DECL
 		}
 
 	{
-#line 13 "lexer.l"
+#line 37 "lexer.l"
 
 
-#line 714 "lex.yy.c"
+#line 735 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -769,97 +790,97 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "lexer.l"
+#line 39 "lexer.l"
 { return USER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "lexer.l"
+#line 40 "lexer.l"
 { return ADMIN; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "lexer.l"
+#line 41 "lexer.l"
 { return GUEST; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "lexer.l"
+#line 42 "lexer.l"
 { return OPERATOR; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "lexer.l"
+#line 43 "lexer.l"
 { return HOUR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "lexer.l"
+#line 44 "lexer.l"
 { return DAY; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "lexer.l"
+#line 45 "lexer.l"
 { return RESOURCE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "lexer.l"
+#line 46 "lexer.l"
 { return AND; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "lexer.l"
+#line 47 "lexer.l"
 { return OR; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "lexer.l"
+#line 48 "lexer.l"
 { return NOT; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 26 "lexer.l"
+#line 50 "lexer.l"
 { return GREATER_EQ; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 27 "lexer.l"
+#line 51 "lexer.l"
 { return LESS_EQ; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 28 "lexer.l"
+#line 52 "lexer.l"
 { return NOT_EQUAL; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 29 "lexer.l"
+#line 53 "lexer.l"
 { return GREATER; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "lexer.l"
+#line 54 "lexer.l"
 { return LESS; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "lexer.l"
+#line 55 "lexer.l"
 { return EQUAL; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 33 "lexer.l"
+#line 57 "lexer.l"
 { return LPAREN; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 34 "lexer.l"
+#line 58 "lexer.l"
 { return RPAREN; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 36 "lexer.l"
+#line 60 "lexer.l"
 { 
     yylval.number = atoi(yytext); 
     return NUMBER; 
@@ -868,7 +889,7 @@ YY_RULE_SETUP
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 41 "lexer.l"
+#line 65 "lexer.l"
 { 
     yylval.string = strdup(yytext); 
     return STRING; 
@@ -876,7 +897,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 46 "lexer.l"
+#line 70 "lexer.l"
 { 
     yylval.string = strdup(yytext); 
     return IDENTIFIER; 
@@ -885,20 +906,20 @@ YY_RULE_SETUP
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 51 "lexer.l"
+#line 75 "lexer.l"
 { }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 53 "lexer.l"
+#line 77 "lexer.l"
 { return yytext[0]; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 55 "lexer.l"
+#line 79 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 902 "lex.yy.c"
+#line 923 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1903,9 +1924,14 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 55 "lexer.l"
+#line 79 "lexer.l"
 
 
+
+/** 
+ * Función requerida por Flex para determinar el final del análisis.
+ * Devuelve 1 para indicar que no hay más archivos a procesar.
+ */
 int yywrap() {
     return 1;
 }

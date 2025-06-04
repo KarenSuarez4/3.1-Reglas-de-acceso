@@ -67,8 +67,12 @@
 
 
 /* First part of user prologue.  */
-#line 3 "parser.y"
+#line 7 "parser.y"
 
+/**
+ * Sección de declaraciones de C.
+ * Incluye las librerías necesarias y las declaraciones de funciones externas.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,7 +82,7 @@ extern int yyparse();
 extern FILE* yyin;
 void yyerror(const char* s);
 
-#line 82 "parser.tab.c"
+#line 86 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -528,12 +532,12 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    48,    55,    59,    60,    61,    65,    66,
-      70,    71,    75,    76,    77,    81,    82,    83,    87,    88,
-      92,    93,    97,   101,   102,   103,   107,   108,   109,   110,
-     111,   112
+       0,    75,    75,    79,    90,    98,    99,   100,   108,   109,
+     117,   118,   126,   127,   128,   136,   137,   138,   146,   147,
+     155,   156,   164,   172,   173,   174,   182,   183,   184,   185,
+     186,   187
 };
 #endif
 
@@ -1121,157 +1125,157 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* access_rule: user_clause AND logical_expression  */
-#line 44 "parser.y"
+#line 75 "parser.y"
                                         { 
         printf("✅ Tipo: Usuario con condiciones\n");
         printf("✅ Regla válida\n"); 
     }
-#line 1130 "parser.tab.c"
+#line 1134 "parser.tab.c"
     break;
 
   case 3: /* access_rule: user_clause  */
-#line 48 "parser.y"
+#line 79 "parser.y"
                                         { 
         printf("✅ Tipo: Solo usuario\n");
         printf("✅ Regla válida\n"); 
     }
-#line 1139 "parser.tab.c"
+#line 1143 "parser.tab.c"
     break;
 
   case 4: /* user_clause: USER role_type  */
-#line 55 "parser.y"
+#line 90 "parser.y"
                                         { printf("Usuario: %s\n", (yyvsp[0].string)); }
-#line 1145 "parser.tab.c"
+#line 1149 "parser.tab.c"
     break;
 
   case 5: /* role_type: ADMIN  */
-#line 59 "parser.y"
+#line 98 "parser.y"
                                         { (yyval.string) = "admin"; }
-#line 1151 "parser.tab.c"
+#line 1155 "parser.tab.c"
     break;
 
   case 6: /* role_type: GUEST  */
-#line 60 "parser.y"
+#line 99 "parser.y"
                                         { (yyval.string) = "guest"; }
-#line 1157 "parser.tab.c"
+#line 1161 "parser.tab.c"
     break;
 
   case 7: /* role_type: OPERATOR  */
-#line 61 "parser.y"
+#line 100 "parser.y"
                                         { (yyval.string) = "operator"; }
-#line 1163 "parser.tab.c"
+#line 1167 "parser.tab.c"
     break;
 
   case 9: /* logical_expression: logical_expression OR logical_term  */
-#line 66 "parser.y"
+#line 109 "parser.y"
                                          { printf("Operación OR\n"); }
-#line 1169 "parser.tab.c"
+#line 1173 "parser.tab.c"
     break;
 
   case 11: /* logical_term: logical_term AND logical_factor  */
-#line 71 "parser.y"
+#line 118 "parser.y"
                                         { printf("Operación AND\n"); }
-#line 1175 "parser.tab.c"
+#line 1179 "parser.tab.c"
     break;
 
   case 13: /* logical_factor: NOT logical_factor  */
-#line 76 "parser.y"
+#line 127 "parser.y"
                                         { printf("Operación NOT\n"); }
-#line 1181 "parser.tab.c"
+#line 1185 "parser.tab.c"
     break;
 
   case 14: /* logical_factor: LPAREN logical_expression RPAREN  */
-#line 77 "parser.y"
+#line 128 "parser.y"
                                         { printf("Expresión entre paréntesis\n"); }
-#line 1187 "parser.tab.c"
+#line 1191 "parser.tab.c"
     break;
 
   case 18: /* time_condition: HOUR comparison_op NUMBER  */
-#line 87 "parser.y"
+#line 146 "parser.y"
                                         { printf("Condición de hora: %d\n", (yyvsp[0].number)); }
-#line 1193 "parser.tab.c"
+#line 1197 "parser.tab.c"
     break;
 
   case 19: /* time_condition: DAY comparison_op STRING  */
-#line 88 "parser.y"
+#line 147 "parser.y"
                                         { printf("Condición de día: %s\n", (yyvsp[0].string)); }
-#line 1199 "parser.tab.c"
+#line 1203 "parser.tab.c"
     break;
 
   case 20: /* resource_condition: RESOURCE comparison_op STRING  */
-#line 92 "parser.y"
+#line 155 "parser.y"
                                         { printf("Condición de recurso: %s\n", (yyvsp[0].string)); }
-#line 1205 "parser.tab.c"
+#line 1209 "parser.tab.c"
     break;
 
   case 21: /* resource_condition: RESOURCE comparison_op IDENTIFIER  */
-#line 93 "parser.y"
+#line 156 "parser.y"
                                         { printf("Condición de recurso: %s\n", (yyvsp[0].string)); }
-#line 1211 "parser.tab.c"
+#line 1215 "parser.tab.c"
     break;
 
   case 22: /* custom_condition: IDENTIFIER comparison_op value  */
-#line 97 "parser.y"
+#line 164 "parser.y"
                                         { printf("Condición personalizada: %s\n", (yyvsp[-2].string)); }
-#line 1217 "parser.tab.c"
+#line 1221 "parser.tab.c"
     break;
 
   case 23: /* value: NUMBER  */
-#line 101 "parser.y"
+#line 172 "parser.y"
                                         { (yyval.number) = (yyvsp[0].number); }
-#line 1223 "parser.tab.c"
+#line 1227 "parser.tab.c"
     break;
 
   case 24: /* value: STRING  */
-#line 102 "parser.y"
+#line 173 "parser.y"
                                         { (yyval.number) = 0; /* Valor por defecto para strings */ }
-#line 1229 "parser.tab.c"
+#line 1233 "parser.tab.c"
     break;
 
   case 25: /* value: IDENTIFIER  */
-#line 103 "parser.y"
+#line 174 "parser.y"
                                         { (yyval.number) = 0; /* Valor por defecto para identificadores */ }
-#line 1235 "parser.tab.c"
+#line 1239 "parser.tab.c"
     break;
 
   case 26: /* comparison_op: EQUAL  */
-#line 107 "parser.y"
+#line 182 "parser.y"
                                         { printf("Operador: =\n"); }
-#line 1241 "parser.tab.c"
+#line 1245 "parser.tab.c"
     break;
 
   case 27: /* comparison_op: NOT_EQUAL  */
-#line 108 "parser.y"
+#line 183 "parser.y"
                                         { printf("Operador: !=\n"); }
-#line 1247 "parser.tab.c"
+#line 1251 "parser.tab.c"
     break;
 
   case 28: /* comparison_op: GREATER  */
-#line 109 "parser.y"
+#line 184 "parser.y"
                                         { printf("Operador: >\n"); }
-#line 1253 "parser.tab.c"
+#line 1257 "parser.tab.c"
     break;
 
   case 29: /* comparison_op: LESS  */
-#line 110 "parser.y"
+#line 185 "parser.y"
                                         { printf("Operador: <\n"); }
-#line 1259 "parser.tab.c"
+#line 1263 "parser.tab.c"
     break;
 
   case 30: /* comparison_op: GREATER_EQ  */
-#line 111 "parser.y"
+#line 186 "parser.y"
                                         { printf("Operador: >=\n"); }
-#line 1265 "parser.tab.c"
+#line 1269 "parser.tab.c"
     break;
 
   case 31: /* comparison_op: LESS_EQ  */
-#line 112 "parser.y"
+#line 187 "parser.y"
                                         { printf("Operador: <=\n"); }
-#line 1271 "parser.tab.c"
+#line 1275 "parser.tab.c"
     break;
 
 
-#line 1275 "parser.tab.c"
+#line 1279 "parser.tab.c"
 
       default: break;
     }
@@ -1464,21 +1468,43 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 115 "parser.y"
+#line 190 "parser.y"
 
 
-/* Función de manejo de errores */
+/**
+ * Función de manejo de errores.
+ * Se invoca cuando se detecta un error sintáctico durante el análisis.
+ * 
+ * Args:
+ *     s: Mensaje de error generado por el parser.
+ */
 void yyerror(const char* s) {
     printf("❌ Error sintáctico: %s\n", s);
     printf("DEBUG: Último token procesado podría ser problemático\n");
 }
 
-/* Debug function */
+/**
+ * Función para depuración de tokens.
+ * Imprime información sobre un token específico durante el análisis.
+ * 
+ * Args:
+ *     token_name: Nombre del token reconocido.
+ */
 void debug_token(const char* token_name) {
     printf("DEBUG: Token reconocido: %s\n", token_name);
 }
 
-/* Función principal */
+/**
+ * Función principal del analizador.
+ * Inicializa el proceso de análisis y maneja la entrada/salida.
+ * 
+ * Args:
+ *     argc: Número de argumentos de la línea de comandos.
+ *     argv: Array de argumentos de la línea de comandos.
+ * 
+ * Returns:
+ *     Código de salida indicando éxito (0) o error (distinto de 0).
+ */
 int main(int argc, char** argv) {
     printf("🚀 Analizador de Reglas de Acceso\n");
     printf("==================================\n");
